@@ -1,2 +1,2 @@
-# spring-boot-starter-openfire
+# openfire-spring-boot-starter
 Spring Boot Starter For Openfire
