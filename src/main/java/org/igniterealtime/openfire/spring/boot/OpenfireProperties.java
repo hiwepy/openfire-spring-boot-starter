@@ -15,7 +15,30 @@
  */
 package org.igniterealtime.openfire.spring.boot;
 
-/**\n * Auto-configuration for OpenfireProperties.\n *\n * @author [@Loong Wan](https://github.com/loong10k)\n * @since 1.0.0\n */
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * Configuration properties for Openfire.
+ *
+ * @author [@Loong Wan](https://github.com/loong10k)
+ * @since 1.0.0
+ */
+@ConfigurationProperties(OpenfireProperties.PREFIX)
 public class OpenfireProperties {
+
+	public static final String PREFIX = "openfire";
+
+	/**
+	 * Enable Openfire integration.
+	 */
+	private boolean enabled = false;
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 }

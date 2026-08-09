@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Unit tests for {{ @link OpenfireProperties }}.
+ * Unit tests for {@link OpenfireProperties}.
  *
  * <p>Verifies default values, getters/setters and POJO contract.</p>
  *
@@ -30,10 +30,35 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DisplayName("OpenfireProperties Tests")
 class OpenfirePropertiesTest {
+
     @Test
     @DisplayName("Default constructor creates non-null instance")
     void testDefaultInstance() {
         OpenfireProperties props = new OpenfireProperties();
         assertThat(props).isNotNull();
     }
+
+    @Test
+    @DisplayName("Default enabled value is false")
+    void testDefaultEnabled() {
+        OpenfireProperties props = new OpenfireProperties();
+        assertThat(props.isEnabled()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Setter and getter for enabled work correctly")
+    void testEnabledSetterGetter() {
+        OpenfireProperties props = new OpenfireProperties();
+        props.setEnabled(true);
+        assertThat(props.isEnabled()).isTrue();
+        props.setEnabled(false);
+        assertThat(props.isEnabled()).isFalse();
+    }
+
+    @Test
+    @DisplayName("PREFIX constant has expected value")
+    void testPrefix() {
+        assertThat(OpenfireProperties.PREFIX).isEqualTo("openfire");
+    }
+
 }

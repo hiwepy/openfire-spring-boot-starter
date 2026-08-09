@@ -17,12 +17,13 @@ package org.igniterealtime.openfire.spring.boot;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Unit tests for {{ @link OpenfireAutoConfiguration }}.
+ * Unit tests for {@link OpenfireAutoConfiguration}.
  *
  * <p>Verifies the auto-configuration activates under the expected conditions
  * and exposes its declared beans.</p>
@@ -33,7 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("OpenfireAutoConfiguration Tests")
 class OpenfireAutoConfigurationTest {
 
-    private final ApplicationContextRunner runner = new ApplicationContextRunner();
+    private final ApplicationContextRunner runner = new ApplicationContextRunner()
+            .withConfiguration(AutoConfigurations.of(OpenfireAutoConfiguration.class));
 
     @Test
     @DisplayName("Auto-configuration class can be instantiated")
@@ -43,17 +45,22 @@ class OpenfireAutoConfigurationTest {
     }
 
     @Test
-    @DisplayName("Auto-configuration loads when 'spring.boot.enabled=true'")
-    void testLoadsWhenEnabledPropertySet() {
-        runner.withUserConfiguration(OpenfireAutoConfiguration.class)
-                .withPropertyValues("spring.boot.enabled=true")
-                .run(context -> assertThat(context).hasSingleBean(OpenfireAutoConfiguration.class));
+    @DisplayName("Auto-configuration loads and registers OpenfireProperties bean")
+    void testLoadsAndRegistersPropertiesBean() {
+        runner.run(context -> {
+            assertThat(context).hasSingleBean(OpenfireProperties.class);
+            assertThat(context.getBean(OpenfireProperties.class).isEnabled()).isFalse();
+        });
     }
 
     @Test
-    @DisplayName("Auto-configuration is absent when property is not set")
-    void testNotLoadedWhenPropertyAbsent() {
-        runner.withUserConfiguration(OpenfireAutoConfiguration.class)
-                .run(context -> assertThat(context).doesNotHaveBean(OpenfireAutoConfiguration.class));
+    @DisplayName("Properties can be overridden via external configuration")
+    void testPropertiesCanBeOverridden() {
+        runner.withPropertyValues("openfire.enabled=true")
+                .run(context -> {
+                    assertThat(context).hasSingleBean(OpenfireProperties.class);
+                    assertThat(context.getBean(OpenfireProperties.class).isEnabled()).isTrue();
+                });
     }
+
 }
