@@ -32,10 +32,15 @@ public class OpenfireProperties {
 	 * Enable Openfire integration.
 	 */
 	private boolean enabled = false;
+	/**
+	 * <p>Is enabled.</p>
+	 * @return the boolean
+	 */
 
 	public boolean isEnabled() {
 		return enabled;
 	}
+	/** Sets the enabled. */
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
